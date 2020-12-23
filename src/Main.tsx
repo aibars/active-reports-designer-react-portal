@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import WindowPortal from './WindowPortal';
+import WindowPortalIFrame from './WindowPortalIFrame';
 
 
 const Main: React.FC = () => {
@@ -7,26 +8,16 @@ const Main: React.FC = () => {
 
     return (
         <div>
-            <button onClick={() => setShow(!show)}>Open Designer</button>
+            <button onClick={() => setShow(!show)}>Open Designer</button>\
+
+            {/* Approach #1 - Portal with React component   */}
+            {/* {show &&
+                (<WindowPortal closeWindowPortal={() => setShow(!show)} />)} */}
+
+
+            {/* Approach #2  - Portal with iframe and PureJS implementation    */}
             {show &&
-                (<WindowPortal closeWindowPortal={() => setShow(!show)} />)}
-
-            {/* <Modal show={show} onHide={() => setShow(!show)} className="designerModal">
-                <Modal.Header>
-                    <Modal.Title id="ModalTitle">Designer</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <DesignerHost />
-                </Modal.Body>
-            </Modal> */}
-
-            {/* {show &&
-
-                <DesignerHost />
-            }  */}
-            {/* {show &&
-                <WindowWrapper closeWindowPortal={() => setShow(!show)}/>
-            } */}
+                (<WindowPortalIFrame closeWindowPortal={() => setShow(!show)} />)}
         </div>
     );
 }
