@@ -1,10 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Designer } from "@grapecity/activereports/reportdesigner";
-import styles from './DesignerHost.module.scss';
-import './DesignerHost.scss';
 import { DesignerHost } from './DesignerHost';
-
 
 interface IWindowPortalProps {
     closeWindowPortal: () => void;
@@ -13,11 +9,12 @@ interface IWindowPortalProps {
 class WindowPortal extends React.PureComponent<IWindowPortalProps> {
 
     private externalWindow: Window;
-    private containerEl: HTMLDivElement;
+    private designerContainer: HTMLDivElement;
 
     constructor(props: IWindowPortalProps) {
         super(props);
-        this.containerEl = document.createElement('div'); // STEP 1: create an empty div
+        this.designerContainer = document.createElement('div');
+        this.designerContainer.id = 'designer-host';
         this.externalWindow = null;
     }
 
@@ -42,10 +39,10 @@ class WindowPortal extends React.PureComponent<IWindowPortalProps> {
 
     componentDidMount() {
         this.externalWindow = window.open('', '', `height=${window.screen.height},width=${window.screen.width}`);
-        this.externalWindow.document.body.appendChild(this.containerEl);
+        this.externalWindow.document.body.appendChild(this.designerContainer);
 
-        this.externalWindow.document.title = 'Report Designer window';
-      
+        this.externalWindow.document.title = 'ActiveReports Designer';
+
         this.copyStyles(document, this.externalWindow.document);
         this.externalWindow.addEventListener('beforeunload', () => {
             this.props.closeWindowPortal();
@@ -57,9 +54,8 @@ class WindowPortal extends React.PureComponent<IWindowPortalProps> {
     }
 
     render() {
-        return ReactDOM.createPortal(<DesignerHost />, this.containerEl);
+        return ReactDOM.createPortal(<DesignerHost element={this.designerContainer} />, this.designerContainer);
     }
 }
-
 
 export default WindowPortal;

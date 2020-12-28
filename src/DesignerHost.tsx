@@ -1,15 +1,30 @@
-import React from "react";
-import { Designer as ReportDesigner } from "@grapecity/activereports/reportdesigner";
-import "@grapecity/activereports/styles/ar-js-ui.css";
-import "@grapecity/activereports/styles/ar-js-designer.css";
-import "./DesignerHost.scss";
+import React, { useRef } from 'react';
+import { Designer as ReportDesigner } from '@grapecity/activereports/reportdesigner';
+import './DesignerHost.scss';
 
-const initDesigner = (designerHostSelector) => {
-  new ReportDesigner(designerHostSelector);
-};
+interface IDesignerHostProps {
+  element: HTMLElement
+}
+export const DesignerHost: React.FC<IDesignerHostProps> = ({ element }) => {
+  const designerRef = React.useRef<ReportDesigner | undefined>();
+  const counter = React.useRef<number>(0);
+  const [reportStorage, setReportStorage] = React.useState(new Map());
 
-export const DesignerHost = () => {
-  React.useEffect(() => initDesigner("#designer-host"), []);
+  React.useEffect(() => {
+    designerRef.current = new ReportDesigner(element);
+    designerRef.current.setActionHandlers({
+      onSave: function (info) {
+        const reportId = info.id || `report${counter.current++}`;
+        setReportStorage(new Map(reportStorage.set(reportId, info.definition)));
+        return Promise.resolve({ displayName: reportId });
+      },
+      onSaveAs: function (info) {
+        const reportId = info.id || `report${counter.current++}`;
+        setReportStorage(new Map(reportStorage.set(reportId, info.definition)));
+        return Promise.resolve({ id: reportId, displayName: reportId });
+      },
+    });
+  }, []);
 
-  return <div id="designer-host"></div>;
+  return null;
 };

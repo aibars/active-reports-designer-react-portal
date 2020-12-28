@@ -8,16 +8,16 @@ const Main: React.FC = () => {
 
     return (
         <div>
-            <button onClick={() => setShow(!show)}>Open Designer</button>\
+            <button onClick={() => setShow(!show)}>Open Designer</button>
 
             {/* Approach #1 - Portal with React component   */}
-            {/* {show &&
-                (<WindowPortal closeWindowPortal={() => setShow(!show)} />)} */}
+            {show &&
+                (<WindowPortal closeWindowPortal={() => setShow(!show)} />)}
 
 
             {/* Approach #2  - Portal with iframe and PureJS implementation    */}
-            {show &&
-                (<WindowPortalIFrame closeWindowPortal={() => setShow(!show)} />)}
+            {/* {show &&
+                (<WindowPortalIFrame closeWindowPortal={() => setShow(!show)} />)} */}
         </div>
     );
 }

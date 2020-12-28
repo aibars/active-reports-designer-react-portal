@@ -1,6 +1,12 @@
+@use "sass:meta";
+
+// #designer-host {
+//   margin: 0 auto;
+//   width: 100%;
+//   height: 100vh;
+// }
+
 #designer-host {
-    margin: 0 auto;
-    width: 100%;
-    height: 100vh;
-  }
-  
+  @include meta.load-css('node_modules/@grapecity/activereports/styles/ar-js-ui.css');
+  @include meta.load-css("node_modules/@grapecity/activereports/styles/ar-js-designer.css");
+}
